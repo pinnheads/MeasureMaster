@@ -39,13 +39,13 @@ export const manifest: Partial<ManifestOptions> = {
 			type: "image/png"
 		},
 		{
-			src: "/favicons/favicon-310x310.png",
-			sizes: "310x310",
+			src: "/favicons/favicon-512x512.png",
+			sizes: "512x512",
 			type: "image/png"
 		},
 		{
-			src: "/favicons/favicon-310x310.png",
-			sizes: "310x310",
+			src: "/favicons/favicon-512x512.png",
+			sizes: "512x512",
 			type: "image/png",
 			purpose: "any maskable"
 		}
