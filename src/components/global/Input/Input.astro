@@ -1,0 +1,8 @@
+---
+const { labelTitle, name, type, id, placeholder} = Astro.props;
+---
+
+<div class="w-full my-4">
+	<label for={name} class="text-lg font-semibold my-4">{labelTitle}</label>
+	<input type={type} name={name} id={id} placeholder={placeholder} class="h-12 p-4 w-full border-gray border-2 border-solid rounded-lg">
+</div>
