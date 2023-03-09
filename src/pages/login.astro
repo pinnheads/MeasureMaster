@@ -1,6 +1,7 @@
 ---
 import { Layout } from "@globals";
 import { Input } from "@globals";
+import { Button } from "@globals"
 ---
 
 <Layout title="Log In">
@@ -21,7 +22,7 @@ import { Input } from "@globals";
 					<form>
 						<Input labelTitle="Email" name="email" type="email" id="user-email" placeholder="jhondoe@example.com" required></Input>
 						<Input labelTitle="Password" name="password" type="password" id="user-password" placeholder="8 or more digit password"></Input>
-						<button type="submit" class="h-12 w-full align-middle text-center rounded-lg bg-primary text-white font-bold text-xl">Log In</button>
+						<Button text="Log In" />
 					</form>
 				</div>
 				<hr>

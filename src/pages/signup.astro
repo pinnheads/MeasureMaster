@@ -1,5 +1,5 @@
 ---
-import { Layout } from "@globals";
+import { Button, Layout } from "@globals";
 import { Input } from "@globals";
 import { addNewUser, isValidEmail, getUser, userExists } from "@util/user";
 import { error } from "astro/dist/core/logger/core";
@@ -58,7 +58,7 @@ if(Astro.request.method === "POST") {
 						<Input labelTitle="Password" name="password" type="password" id="user-password" placeholder="8 or more digit password"></Input>
 						<Input labelTitle="Confirm Password" name="confirm-password" type="password" id="user-confirm-password" placeholder="re-enter your password"></Input>
 						{errors.passwordError && <p>{errors.passwordError}</p>}
-						<button class="h-12 w-full align-middle text-center rounded-lg bg-primary text-white font-bold text-xl" id="submit">Create An Account</button>
+						<Button text="Create An Account" />
 					</form>
 				</div>
 				<hr>
