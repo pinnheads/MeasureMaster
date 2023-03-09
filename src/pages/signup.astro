@@ -1,6 +1,41 @@
 ---
 import { Layout } from "@globals";
 import { Input } from "@globals";
+import { addNewUser, isValidEmail, getUser, userExists } from "@util/user";
+import { error } from "astro/dist/core/logger/core";
+
+const errors = { emailError: "", passwordError: "" }
+
+if(Astro.request.method === "POST") {
+	try {
+		const data = await Astro.request.formData();
+		const email = data.get("email") as string
+		const password = data.get("password") as string
+		const passwordConfirm = data.get("confirm-password") as string
+
+		if(!isValidEmail(email)) {
+			errors.emailError = "Please enter a valid email"
+		} else if (await userExists(email)) {
+			errors.emailError = "User with this email already exsists"
+		} else if(password != passwordConfirm) {
+			errors.passwordError = "Passwords do not match"
+		} else if(password.length < 8) {
+			errors.passwordError = "Password must be atleast 8 characters"
+		}
+
+		if(errors.emailError.length < 1 && errors.passwordError.length < 1) {
+			const newUser = await addNewUser({email, password, passwordConfirm});
+			console.log(newUser)
+			return Astro.redirect('/signup')
+		}
+
+	} catch (error) {
+		if(error instanceof Error) {
+			console.log(error)
+			return Astro.redirect('/signup')
+		}
+	}
+}
 ---
 
 <Layout title="Sign Up">
@@ -17,12 +52,13 @@ import { Input } from "@globals";
 			</div>
 			<div class="space-y-4">
 				<div class="grid gap-4">
-					<!-- TODO: Add form functionality -->
-					<form>
-						<Input labelTitle="Email" name="email" type="email" id="user-email" placeholder="jhondoe@example.com" required></Input>
+					<form method="POST">
+						<Input labelTitle="Email" name="email" type="email" id="user-email" placeholder="johndoe@example.com" required></Input>
+						{errors.emailError && <p>{errors.emailError}</p>}
 						<Input labelTitle="Password" name="password" type="password" id="user-password" placeholder="8 or more digit password"></Input>
 						<Input labelTitle="Confirm Password" name="confirm-password" type="password" id="user-confirm-password" placeholder="re-enter your password"></Input>
-						<button type="submit" class="h-12 w-full align-middle text-center rounded-lg bg-primary text-white font-bold text-xl">Create An Account</button>
+						{errors.passwordError && <p>{errors.passwordError}</p>}
+						<button class="h-12 w-full align-middle text-center rounded-lg bg-primary text-white font-bold text-xl" id="submit">Create An Account</button>
 					</form>
 				</div>
 				<hr>
