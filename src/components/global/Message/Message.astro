@@ -1,0 +1,53 @@
+---
+import { Type } from './messageType';
+
+interface Props {
+	messageType: Type;
+	messageBody: string;
+}
+
+const { messageType, messageBody } = Astro.props;
+---
+{
+	messageType == Type.Error &&
+	<div id="notification" class="h-14 rounded-md shadow-xl p-4 align-middle justify-center absolute top-10 left-12 w-5/6 bg-red-500">
+		<p class="text-lg font-semibold w-full">{ messageBody }</p>
+	</div>
+}
+
+{
+	messageType == Type.Info &&
+	<div id="notification" class="h-14 rounded-md shadow-xl p-4 align-middle justify-center absolute top-10 left-12 w-5/6 bg-amber-500">
+		<p class="text-lg font-semibold w-full">{ messageBody }</p>
+	</div>
+}
+
+{
+	messageType == Type.Success &&
+	<div id="notification" class="h-14 rounded-md shadow-xl p-4 align-middle justify-center absolute top-10 left-12 w-5/6 bg-green-500">
+		<p class="text-lg font-semibold w-full">{ messageBody }</p>
+	</div>
+}
+
+
+<script>
+	const notification = document.getElementById('notification');
+
+	const fadeTo = (element: HTMLElement) => {
+		// Store our element's current opacity (or default to 1 if null)
+        var fromValue = 1;
+        let interval = setInterval(() => {
+            var new_opacity = fromValue - 0.1;
+            fromValue = new_opacity;
+            // If our ratio is >= 1, then we're done.. so stop processing
+            if (new_opacity < 0.1) {
+				clearInterval(interval);
+                element.style.display = 'none';
+            }
+            // Apply visual. Style attributes are strings.
+            element.style.opacity = `${new_opacity}`;
+        }, 1000 / 15);
+	}
+
+	setTimeout(() => fadeTo(notification), 3000)
+</script>

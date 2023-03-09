@@ -1,0 +1,20 @@
+---
+import { Button, Layout, Message, Input } from "@globals";
+import { Type } from "@component/global/Message/messageType";
+---
+
+<Layout title="Sign Up">
+	<section class="p-6 lg:pt-10 flex-1 flex flex-col justify-start lg:justify-between">
+		<div
+			class="max-w-xl mx-auto flex flex-col flex-1 space-y-4 lg:space-y-10"
+		>
+			<Message messageType={Type.Success} messageBody="Successfully created account" />
+			<div>
+				<h1 class="text-4xl font-semibold">Complete Your Profile</h1>
+				<p class="italic">
+					Just a few more details about your buisness
+				</p>
+			</div>
+		</div>
+	</section>
+</Layout>

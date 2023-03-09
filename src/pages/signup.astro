@@ -1,8 +1,8 @@
 ---
-import { Button, Layout } from "@globals";
+import { Button, Layout, Message } from "@globals";
+import { Type } from "@component/global/Message/messageType";
 import { Input } from "@globals";
 import { addNewUser, isValidEmail, getUser, userExists } from "@util/user";
-import { error } from "astro/dist/core/logger/core";
 
 const errors = { emailError: "", passwordError: "" }
 
@@ -25,8 +25,7 @@ if(Astro.request.method === "POST") {
 
 		if(errors.emailError.length < 1 && errors.passwordError.length < 1) {
 			const newUser = await addNewUser({email, password, passwordConfirm});
-			console.log(newUser)
-			return Astro.redirect('/signup')
+			return Astro.redirect('/profile')
 		}
 
 	} catch (error) {
@@ -40,7 +39,6 @@ if(Astro.request.method === "POST") {
 
 <Layout title="Sign Up">
 	<section class="p-6 lg:pt-10 flex-1 flex flex-col justify-start lg:justify-between">
-		<!-- Welcome -->
 		<div
 			class="max-w-xl mx-auto flex flex-col flex-1 space-y-4 lg:space-y-10"
 		>
@@ -54,10 +52,10 @@ if(Astro.request.method === "POST") {
 				<div class="grid gap-4">
 					<form method="POST">
 						<Input labelTitle="Email" name="email" type="email" id="user-email" placeholder="johndoe@example.com" required></Input>
-						{errors.emailError && <p>{errors.emailError}</p>}
+						{errors.emailError && <Message messageType={Type.Error} messageBody={errors.emailError} />}
 						<Input labelTitle="Password" name="password" type="password" id="user-password" placeholder="8 or more digit password"></Input>
 						<Input labelTitle="Confirm Password" name="confirm-password" type="password" id="user-confirm-password" placeholder="re-enter your password"></Input>
-						{errors.passwordError && <p>{errors.passwordError}</p>}
+						{errors.passwordError && <Message messageType={Type.Error} messageBody={errors.passwordError} /> }
 						<Button text="Create An Account" />
 					</form>
 				</div>
