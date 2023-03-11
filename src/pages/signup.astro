@@ -50,12 +50,12 @@ if(Astro.request.method === "POST") {
 			</div>
 			<div class="space-y-4">
 				<div class="grid gap-4">
-					<form method="POST">
+					<form method="POST" id="signup-form">
 						<Input labelTitle="Email" name="email" type="email" id="user-email" placeholder="johndoe@example.com" required></Input>
 						{errors.emailError && <Message messageType={Type.Error} messageBody={errors.emailError} />}
 						<Input labelTitle="Password" name="password" type="password" id="user-password" placeholder="8 or more digit password"></Input>
 						<Input labelTitle="Confirm Password" name="confirm-password" type="password" id="user-confirm-password" placeholder="re-enter your password"></Input>
-						{errors.passwordError && <Message messageType={Type.Error} messageBody={errors.passwordError} /> }
+						{errors.passwordError && <Message messageType={Type.Info} messageBody={errors.passwordError} /> }
 						<Button text="Create An Account" />
 					</form>
 				</div>

@@ -11,7 +11,9 @@ export const addNewUser = async (data: {
 	email: string
 	password: string
 	passwordConfirm: string
+	emailVisibility?: boolean
 }): Promise<UsersRecord> => {
+	data.emailVisibility = data.emailVisibility || true
 	return await (await userCollection()).create(data)
 }
 
@@ -45,7 +47,7 @@ export const getUser = async (
 
 export const userExists = async (email: string): Promise<boolean> => {
 	try {
-		const user = await getUser(email)
+		const user = await getUser(email);
 		return true
 	} catch (error) {
 		return false
