@@ -18,10 +18,11 @@ export const addNewUser = async (data: {
 }
 
 // Auth with Password
-export const authData = async (data: { email: string; password: string }) => {
-	return await (
+export const login = async (data: { email: string; password: string }) => {
+	await (
 		await userCollection()
 	).authWithPassword(data.email, data.password)
+	return pb.authStore.exportToCookie();
 }
 
 // Update a user
@@ -45,6 +46,11 @@ export const getUser = async (
 	throw new Error("No value provided")
 }
 
+export const logout = () => {
+	pb.authStore.clear();
+}
+
+// Check if a user exists - only works if user emailVisibility is set to true
 export const userExists = async (email: string): Promise<boolean> => {
 	try {
 		const user = await getUser(email);

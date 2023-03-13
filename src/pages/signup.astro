@@ -2,7 +2,8 @@
 import { Button, Layout, Message } from "@globals";
 import { Type } from "@component/global/Message/messageType";
 import { Input } from "@globals";
-import { addNewUser, isValidEmail, getUser, userExists } from "@util/user";
+import { addNewUser, isValidEmail, login, userExists } from "@util/user";
+import pb from "@util/pocketbase";
 
 const errors = { emailError: "", passwordError: "" }
 
@@ -25,6 +26,8 @@ if(Astro.request.method === "POST") {
 
 		if(errors.emailError.length < 1 && errors.passwordError.length < 1) {
 			const newUser = await addNewUser({email, password, passwordConfirm});
+			const logIn = await login({email, password})
+			Astro.cookies.set("pb_auth", logIn)
 			return Astro.redirect('/profile')
 		}
 
