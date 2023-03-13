@@ -1,0 +1,8 @@
+---
+interface Props {
+	text: string;
+}
+const { text } = Astro.props;
+---
+
+<button class="h-12 w-full align-middle text-center rounded-lg bg-primary text-white font-bold text-xl" id="submit">{ text }</button>

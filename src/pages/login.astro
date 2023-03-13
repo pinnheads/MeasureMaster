@@ -1,0 +1,54 @@
+---
+import { Layout } from "@globals";
+import { Input } from "@globals";
+import { Button } from "@globals"
+import { login } from "@util/user";
+
+
+if(Astro.request.method === "POST") {
+	try {
+		const data = await Astro.request.formData();
+		const email = data.get("email") as string
+		const password = data.get("password") as string
+
+
+		const logIn = await login({email, password})
+		Astro.cookies.set("pb_auth", logIn.exportToCookie())
+		return Astro.redirect('/profile')
+
+	} catch (error) {
+		if(error instanceof Error) {
+			console.log(error)
+			return Astro.redirect('/signup')
+		}
+	}
+}
+---
+
+<Layout title="Log In">
+	<section class="p-6 lg:pt-10 flex-1 flex flex-col justify-start lg:justify-between">
+		<!-- Welcome -->
+		<div
+			class="max-w-xl mx-auto flex flex-col flex-1 space-y-4 lg:space-y-10"
+		>
+			<div>
+				<h1 class="text-4xl font-semibold">Log In</h1>
+				<p class="italic">
+					Welcome back! Please enter your credentials to continue.
+				</p>
+			</div>
+			<div class="space-y-4">
+				<div class="grid gap-4">
+					<!-- TODO: Add form functionality -->
+					<form method="POST" id="login-form">
+						<Input labelTitle="Email" name="email" type="email" id="user-email" placeholder="jhondoe@example.com" required></Input>
+						<Input labelTitle="Password" name="password" type="password" id="user-password" placeholder="8 or more digit password"></Input>
+						<Button text="Log In" />
+					</form>
+				</div>
+				<hr>
+				<p class="text-md">New to the platform? <a class="font-bold text-primary" href="/signup">Create An Account</a></p>
+			</div>
+		</div>
+	</section>
+</Layout>

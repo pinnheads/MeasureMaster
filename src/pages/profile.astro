@@ -1,0 +1,80 @@
+---
+import { Button, Layout, Message, Input } from "@globals";
+import { Type } from "@component/global/Message/messageType";
+import { UsersWearsForOptions } from "@util/pocketbase-types";
+import pb from "@util/pocketbase";
+import { updateUser } from "@util/user";
+
+if(pb.authStore.isValid){
+	if(Astro.request.method === "POST") {
+		try {
+			const data = await Astro.request.formData();
+			const user_data =
+			{
+				name: data.get("name") as string,
+				shop_name: data.get("shop-name") as string,
+				contact: data.get("contact") as unknown as number,
+				address: data.get("address") as string,
+				wears_for: UsersWearsForOptions.Both
+			}
+			const wear_type = data.get("wears_for") as string
+			if(wear_type.toLowerCase() === "male") {
+				user_data.wears_for = UsersWearsForOptions.Male
+			} else if(wear_type.toLowerCase() === "female") {
+				user_data.wears_for = UsersWearsForOptions.Female
+			}
+
+			const updated_user = await updateUser(user_data, pb.authStore.model.id)
+			return Astro.redirect('/home')
+		} catch (error) {
+			if(error instanceof Error) {
+				return Astro.redirect("/")
+			}
+		}
+	}
+} else {
+	return Astro.redirect("/login")
+}
+---
+
+<Layout title="Profile">
+	<section class="p-6 lg:pt-10 flex-1 flex flex-col justify-start lg:justify-between">
+		<div
+			class="max-w-xl mx-auto flex flex-col flex-1 space-y-4 lg:space-y-10"
+		>
+			<Message messageType={Type.Success} messageBody="Successfully created account" />
+			<div>
+				<h1 class="text-4xl font-semibold">Complete Your Profile</h1>
+				<p class="italic">
+					Just a few more details about your buisness
+				</p>
+			</div>
+			<div class="space-y-4">
+				<div class="grid gap-4">
+					<form method="POST" id="signup-form">
+						<Input labelTitle="Name" name="name" type="text" id="user-name" placeholder="enter your full name" required></Input>
+						<Input labelTitle="Shop Name" name="shop-name" type="text" id="user-shop-name" placeholder="your shop name"></Input>
+						<Input labelTitle="Phone No" name="contact" type="number" id="user-contact" placeholder="10 digit phone number"></Input>
+						<Input labelTitle="Address" name="address" type="text" id="user-address" placeholder="enter your address"></Input>
+						<p class="text-lg font-semibold my-4">Wears For</p>
+						<div class="flex space-x-10 my-4">
+							<div>
+								<input class="text-lg font-normal my-4" name="wears_for" type="radio" id="male" value="male">
+								<label class="text-lg font-normal my-4 mx-2" for="male">Male</label>
+							</div>
+							<div>
+								<input class="text-lg font-normal my-4" name="wears_for" type="radio" id="female" value="female">
+								<label class="text-lg font-normal my-4 mx-2" for="female">Female</label>
+							</div>
+							<div>
+								<input class="text-lg font-normal my-4" name="wears_for" type="radio" id="both" value="both">
+								<label class="text-lg font-normal my-4 mx-2" for="both">Both</label>
+							</div>
+						</div>
+						<Button text="Complete my Profile" />
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+</Layout>
