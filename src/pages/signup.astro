@@ -27,7 +27,7 @@ if(Astro.request.method === "POST") {
 		if(errors.emailError.length < 1 && errors.passwordError.length < 1) {
 			const newUser = await addNewUser({email, password, passwordConfirm});
 			const logIn = await login({email, password})
-			Astro.cookies.set("pb_auth", logIn)
+			Astro.cookies.set("pb_auth", logIn.exportToCookie())
 			return Astro.redirect('/profile')
 		}
 

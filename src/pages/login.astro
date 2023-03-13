@@ -2,6 +2,27 @@
 import { Layout } from "@globals";
 import { Input } from "@globals";
 import { Button } from "@globals"
+import { login } from "@util/user";
+
+
+if(Astro.request.method === "POST") {
+	try {
+		const data = await Astro.request.formData();
+		const email = data.get("email") as string
+		const password = data.get("password") as string
+
+
+		const logIn = await login({email, password})
+		Astro.cookies.set("pb_auth", logIn.exportToCookie())
+		return Astro.redirect('/profile')
+
+	} catch (error) {
+		if(error instanceof Error) {
+			console.log(error)
+			return Astro.redirect('/signup')
+		}
+	}
+}
 ---
 
 <Layout title="Log In">
@@ -19,7 +40,7 @@ import { Button } from "@globals"
 			<div class="space-y-4">
 				<div class="grid gap-4">
 					<!-- TODO: Add form functionality -->
-					<form>
+					<form method="POST" id="login-form">
 						<Input labelTitle="Email" name="email" type="email" id="user-email" placeholder="jhondoe@example.com" required></Input>
 						<Input labelTitle="Password" name="password" type="password" id="user-password" placeholder="8 or more digit password"></Input>
 						<Button text="Log In" />

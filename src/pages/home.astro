@@ -1,0 +1,9 @@
+---
+import pb from "@util/pocketbase";
+
+const name = pb.authStore.model.name
+
+---
+
+<a href="/logout">Logout</a>
+<h1>Welcome {name}</h1>

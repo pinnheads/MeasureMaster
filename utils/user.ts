@@ -22,7 +22,7 @@ export const login = async (data: { email: string; password: string }) => {
 	await (
 		await userCollection()
 	).authWithPassword(data.email, data.password)
-	return pb.authStore.exportToCookie();
+	return pb.authStore;
 }
 
 // Update a user
